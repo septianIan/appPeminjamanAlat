@@ -23,7 +23,7 @@
             </div>
             <div class="card-body">
             @if(session('message'))
-               <div id="notif" class="alert alert-info">{{ session('message') }}</div>
+               <div id="notif" class="alert alert-danger">{{ session('message') }}</div>
             @endif
             <div id="notification" style="font-weight:bold;"></div>
                <label for="">Nim</label>
@@ -50,9 +50,9 @@
                </div>
                @enderror
 
-               <label for="">Alamat</label>
-               <textarea name="address" id="address" cols="3" rows="3" class="form-control @error('address') is-invalid @enderror">{{ old('address') }}</textarea>
-               @error('address')
+               <label for="">Angkatan</label>
+               <input type="text" name="class" value="{{ old('class') }}" id="class" class="form-control @error('class') is-invalid @enderror" required>
+               @error('class')
                <div class="invalid-feedback">
                   {{ $message }}
                </div>
@@ -142,7 +142,7 @@
                if(data.success === true){
                   $('#name').val(data.maha.name);
                   $('#majors').val(data.maha.majors);
-                  $('#address').val(data.maha.address)
+                  $('#class').val(data.maha.class)
                   $('#notification').addClass('alert alert-success');
                   $('#notification').html(data.message);
                   $('#nim').css("background","#FFF");
@@ -162,7 +162,7 @@
          $('#nim').val('');
          $('#name').val('');
          $('#majors').val('');
-         $('#address').val('');
+         $('#class').val('');
       }
 
       //notif

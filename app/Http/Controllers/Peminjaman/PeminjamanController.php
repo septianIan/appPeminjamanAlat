@@ -41,8 +41,16 @@ class PeminjamanController extends Controller
      */
     public function store(Request $request)
     {   
+        $cekPeminjam = Borrowing::where([
+            ['nim', $request->nim],
+            ['status', '=', '1']
+        ])->first();
+        if ($cekPeminjam) {
+            return \redirect()->back()->with('message', 'Mahasiswa masih dalam pinjaman');
+        }
+
         $toolArragements = ToolArragement::find($request->idToolArragement);
-        $borrowing = Borrowing::create(\array_merge($request->only('nim','name', 'majors', 'address', 'date'), [
+        $borrowing = Borrowing::create(\array_merge($request->only('nim','name', 'majors', 'class', 'date'), [
             'time' => Carbon::now()->format('H:i')
         ]));
 
@@ -111,6 +119,7 @@ class PeminjamanController extends Controller
     public function destroy($id)
     {
         $peminjam = Borrowing::find($id);
+        $peminjam->toolArragements()->update(['outTool' => 0]);
         $peminjam->details()->delete();
         $peminjam->toolArragements()->detach();
         $peminjam->delete();
@@ -134,6 +143,7 @@ class PeminjamanController extends Controller
     public function cariNim(Request $request)
     {
         $nim = DB::table('students')->where('nim', $request->nim)->first();
+
         if (!empty($nim)) {
             $success = true;
             $message = 'Nim sudah terdaftar';

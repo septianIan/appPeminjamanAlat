@@ -49,9 +49,9 @@
                </div>
                @enderror
 
-               <label for="">Alamat</label>
-               <textarea name="address" id="address" cols="3" rows="3" class="form-control @error('address') is-invalid @enderror">{{ $peminjam->address }}</textarea>
-               @error('address')
+               <label for="">Angkatan</label>
+               <input type="text" name="class" value="{{ $peminjam->class }}" id="class" class="form-control @error('class') is-invalid @enderror" required>
+               @error('class')
                <div class="invalid-feedback">
                   {{ $message }}
                </div>

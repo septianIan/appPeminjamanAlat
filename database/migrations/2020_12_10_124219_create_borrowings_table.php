@@ -18,7 +18,7 @@ class CreateBorrowingsTable extends Migration
             $table->string('nim');
             $table->string('name');
             $table->string('majors');
-            $table->string('address');
+            $table->string('class');
             $table->string('date');
             $table->string('time');
             $table->string('status')->default('1');
