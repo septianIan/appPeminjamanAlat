@@ -55,7 +55,7 @@ Route::middleware(['auth'])->group(function() {
     Route::get('peminjam/detail/{id}', 'Peminjaman\PeminjamanController@detailPeminjam')->name('peminjam.detail');
 
     //pengembalian
-    Route::get('pengembalian/alat/{id}', 'Peminjaman\PeminjamanController@pengembalian')->name('pengembalian.alat');
+    Route::post('pengembalian/alat', 'Peminjaman\PeminjamanController@pengembalian')->name('pengembalian.alat');
 
     //riwayat
     Route::get('riwayat/peminjaman', 'Peminjaman\PeminjamanController@riwayat')->name('riwayat.peminjam');

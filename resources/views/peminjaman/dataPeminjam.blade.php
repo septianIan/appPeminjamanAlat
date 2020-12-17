@@ -27,6 +27,7 @@
                         <th>Nim</th>
                         <th>Nama mahasiswa</th>
                         <th>Nama alat</th>
+                        <th>Jumlah</th>
                         <th>Waktu pinjam</th>
                         <th>Action</th>
                      </tr>
@@ -40,11 +41,14 @@
                            <td>
                               <ul>
                                  @foreach($v->toolArragements as $tool)
-                                    @foreach($v->details as $detail)
-                                       <li>{{ $tool->tool->toolName }} | jumlah {{ $detail->jumlah }}</li>
-                                    @endforeach
+                                    <li>{{ $tool->tool->toolName }}</li>
                                  @endforeach
                               </ul>
+                           </td>
+                           <td>
+                              @foreach($v->details as $detail)
+                                 <li>{{ $detail->jumlah }}</li>
+                              @endforeach
                            </td>
                            <td>{{ $v->date }} | {{ $v->time }}</td>
                            <td>

@@ -45,22 +45,18 @@
                            <th>Rak</th>
                            <th>Nama alat</th>
                            <th>Spesifikasi</th>
-                           <th>Jumlah</th>
                         </tr>
                      </thead>
                      <tbody>
                         @foreach($peminjam->toolArragements as $tool)
-                        @foreach($peminjam->details as $detail)
-                           <tr>
+                        <tr>
                            <td>{{ $loop->iteration }}</td>
                            <td>{{ $tool->table }}</td>
                            <td>{{ $tool->rak }}</td>
                            <td>{{ $tool->tool->toolName }}</td>
                            <td>{{ $tool->tool->specification }}</td>
-                           <td>{{ $detail->jumlah }}</td>
+                        @endforeach
                         </tr>
-                        @endforeach
-                        @endforeach
                      </tbody>
                   </table>
                </div>
@@ -68,9 +64,23 @@
 
             <div class="row no-print">
                @if($peminjam->status == 1)
-                  <a href="" class="btn btn-info btn-flat" data-id="{{ $peminjam->id }}" id="pengembalian">
-                     <i class="fa fa-arrow-left"></i> Kembalikan
-                  </a>
+
+                  <form action="{{ route('pengembalian.alat') }}" method="post">
+                  @csrf
+                  <input type="hidden" value="{{ $peminjam->id }}" name="id">
+                     @foreach($peminjam->details as $detail)
+                        <input type="hidden" name="jumlahPinjam[]" value="{{ $detail->jumlah }}">
+                     @endforeach
+
+                     @foreach($peminjam->toolArragements as $tool)
+                        <input type="hidden" name="idToolArragement[]" value="{{ $tool->id }}">
+
+                        <input type="hidden" name="jumlahTerakhir[]" value="{{ $tool->outTool }}">
+                     @endforeach
+                     <button class="btn btn-info btn-flat">
+                        <i class="fa fa-arrow-left"></i> Kembalikan
+                     </button>
+                  </form>
                @endif
             </div>
          </div>
@@ -96,43 +106,4 @@
 
 <!-- Sweet alert -->
 <script src="{{ asset('assets/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
-<script>
-   $('#pengembalian').on('click', function(e){
-      e.preventDefault();
-      var id = $(this).data('id'); //ambil dari data-id
-
-      Swal.fire({
-         title: 'Pengembalian Alat?',
-         text: "",
-         icon: 'warning',
-         showCancelButton: true,
-         confirmButtonColor: '#3085d6',
-         cancelButtonColor: '#d33',
-         confirmButtonText: 'Yes!',
-         cancelButtonText: 'Cancel!',
-      }).then((result) => {
-         if (result.value) {
-            $.ajax({
-               type: "GET",
-               url: "/pengembalian/alat/"+id,
-               data: {
-                  "id": id,
-                  "_token": "{{ csrf_token() }}"
-               },
-
-               //setelah berhasil di hapus
-               success: function(data){
-                  Swal.fire(
-                  'Pengembalian!',
-                  'Pengembalian alat.',
-                  'success'
-                  )
-                  //setelah alert succes, maka reload halaman
-                  window.location = "/peminjam/data";
-               }
-            })
-         }
-      })
-   });
-</script>
 @endpush

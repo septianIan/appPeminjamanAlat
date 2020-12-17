@@ -31,6 +31,7 @@
                         <th>Spesifikasi</th>
                         <th>Kondisi baik</th>
                         <th>Kondisi rusak</th>
+                        <th>Alat keluar</th>
                         <th>Barcode</th>
                      </tr>
                   </thead>
@@ -78,6 +79,7 @@
          {data: 'tool.specification'},
          {data: 'goodCondition'},
          {data: 'badCondition'},
+         {data: 'outTool'},
          {data: 'barcode'},
       ]
    });

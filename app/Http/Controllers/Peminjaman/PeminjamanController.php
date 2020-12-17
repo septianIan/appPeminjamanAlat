@@ -213,23 +213,19 @@ class PeminjamanController extends Controller
         return \redirect()->back();
     }
 
-    public function pengembalian($id)
+    public function pengembalian(Request $request)
     {
-        $peminjam = Borrowing::with(['details', 'toolArragements'])->find($id);
-
-        foreach ($peminjam->toolArragements as $tool) {
-            $alat = $tool->outTool;
-        }
-
-        $jumlahPinjam = 0;
-        foreach ($peminjam->details as $detail) {
-            $jumlahPinjam += $detail->jumlah;
-        }
-
+        $peminjam = Borrowing::with(['details', 'toolArragements'])->find($request->id);
         $peminjam->update(['status' => '0']);
-        $peminjam->toolArragements()->update(['outTool' => $alat - $jumlahPinjam]);
 
-        return \response()->json(true);
+        for ($i=0; $i < \count($request->idToolArragement) ; $i++) { \
+            DB::table('tool_arragements')->where('id', $request->idToolArragement[$i])
+            ->update([
+                'outTool' => $request->jumlahTerakhir[$i] - $request->jumlahPinjam[$i]
+            ]);
+        }
+        \session()->flash('message', 'Pemijam telah mengembalikan');
+        return \redirect(\route('peminjam.data'));
     }
 
     public function riwayat()

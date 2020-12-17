@@ -93,7 +93,7 @@
                                  <input type="hidden" name="idToolArragement[]" value="{{ $tool->id }}">
 
                                  {{-- jumlah terakhir --}}
-                                 <input type="text" class="form-control" value="{{ $tool->outTool }}" name="jumlahTerakhir">
+                                 <input type="hidden" class="form-control" value="{{ $tool->outTool }}" name="jumlahTerakhir">
 
                                  <input type="text" name="jumlahPinjam" id="" class="form-control" required>
                               </td>
