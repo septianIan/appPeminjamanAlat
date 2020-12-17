@@ -94,6 +94,9 @@
                            <td width="180px">
                               <input type="hidden" name="idToolArragement[]" value="{{ $tool->id }}">
 
+                              {{-- jumlah terakhir --}}
+                              <input type="text" class="form-control" value="{{ $tool->outTool }}" name="jumlahTerakhir[]">
+
                               <input type="text" name="jumlahPinjam[]" id="" class="form-control" required>
                               <font style="font-size:12px;">Kondisi alat yang dapat dipakai <b>{{ $tool->goodCondition - $tool->outTool }}</b></font>
                            </td>

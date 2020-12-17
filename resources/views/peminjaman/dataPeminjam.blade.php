@@ -40,7 +40,9 @@
                            <td>
                               <ul>
                                  @foreach($v->toolArragements as $tool)
-                                    <li>{{ $tool->tool->toolName }} | jumlah {{ $tool->outTool }}</li>
+                                    @foreach($v->details as $detail)
+                                       <li>{{ $tool->tool->toolName }} | jumlah {{ $detail->jumlah }}</li>
+                                    @endforeach
                                  @endforeach
                               </ul>
                            </td>

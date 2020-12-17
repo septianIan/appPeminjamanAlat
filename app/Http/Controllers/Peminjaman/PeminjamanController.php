@@ -67,7 +67,7 @@ class PeminjamanController extends Controller
         for ($i=0; $i < \count($request->idToolArragement) ; $i++) { \
             DB::table('tool_arragements')->where('id', $request->idToolArragement[$i])
             ->update([
-                'outTool' => $request->jumlahPinjam[$i]
+                'outTool' => $request->jumlahTerakhir[$i] + $request->jumlahPinjam[$i]
             ]);
         }
 
@@ -194,7 +194,7 @@ class PeminjamanController extends Controller
         if($result <= 0){
             $tool->borrowing()->detach();
             $tool->update([
-                'outTool' => 0
+                'outTool' => $request->jumlahTerakhir + $request->jumlahTerakhir
             ]);
         } else {
             $tool->update([
@@ -215,9 +215,19 @@ class PeminjamanController extends Controller
 
     public function pengembalian($id)
     {
-        $peminjam = Borrowing::find($id);
+        $peminjam = Borrowing::with(['details', 'toolArragements'])->find($id);
+
+        foreach ($peminjam->toolArragements as $tool) {
+            $alat = $tool->outTool;
+        }
+
+        $jumlahPinjam = 0;
+        foreach ($peminjam->details as $detail) {
+            $jumlahPinjam += $detail->jumlah;
+        }
+
         $peminjam->update(['status' => '0']);
-        $peminjam->toolArragements()->update(['outTool' => 0]);
+        $peminjam->toolArragements()->update(['outTool' => $alat - $jumlahPinjam]);
 
         return \response()->json(true);
     }

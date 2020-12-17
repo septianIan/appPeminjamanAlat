@@ -50,14 +50,16 @@
                      </thead>
                      <tbody>
                         @foreach($peminjam->toolArragements as $tool)
-                        <tr>
+                        @foreach($peminjam->details as $detail)
+                           <tr>
                            <td>{{ $loop->iteration }}</td>
                            <td>{{ $tool->table }}</td>
                            <td>{{ $tool->rak }}</td>
                            <td>{{ $tool->tool->toolName }}</td>
                            <td>{{ $tool->tool->specification }}</td>
-                           <td>{{ $tool->outTool }}</td>
+                           <td>{{ $detail->jumlah }}</td>
                         </tr>
+                        @endforeach
                         @endforeach
                      </tbody>
                   </table>
