@@ -42,9 +42,9 @@ Route::middleware(['auth'])->group(function() {
 
     //peminjaman
     Route::resource('peminjaman', 'Peminjaman\PeminjamanController');
-    Route::get('data/tool', 'Peminjaman\PeminjamanController@dataTable')->name('data.tool');
+    // Route::get('data/tool', 'Peminjaman\PeminjamanController@dataTable')->name('data.tool');
     Route::post('cari/nim', 'Peminjaman\PeminjamanController@cariNim')->name('cari.nim');
-    Route::get('checkList/alat', 'Peminjaman\PeminjamanController@pinjamAlat')->name('checkList.alat');
+    Route::post('checkList/alat', 'Peminjaman\PeminjamanController@pinjamAlat')->name('checkList.alat');
 
     //data pemijam
     Route::get('peminjam/data', 'Peminjaman\PeminjamanController@dataPeminjam')->name('peminjam.data');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Peminjaman;
 use App\Borrowing;
 use App\DetailBorrowing;
 use App\Http\Controllers\Controller;
+use App\Student;
 use App\Tool;
 use App\ToolArragement;
 use Carbon\Carbon;
@@ -20,7 +21,10 @@ class PeminjamanController extends Controller
      */
     public function index()
     {
-        return view('peminjaman.index');
+        return view('peminjaman.index', [
+            'students' => Student::orderBy('name')->get(),
+            'tools' => ToolArragement::with('tool')->latest()->get()
+        ]);
     }
 
     /**
@@ -127,19 +131,6 @@ class PeminjamanController extends Controller
         return \response()->json(true);
     }
 
-    public function dataTable()
-    {
-        $toolArragement = ToolArragement::with('tool')->latest()->get();
-        return datatables()->of($toolArragement)
-            ->editColumn('select_tool',static function($toolArragement){
-                $checkBox = '<input type="checkbox" name="alat[]" id="'.$toolArragement->id.'" value="'.$toolArragement->id.'" class="form-control">';
-                return $checkBox;
-            })
-            ->addIndexColumn()
-            ->rawColumns(['select_tool'])
-            ->toJson();
-    }
-
     public function cariNim(Request $request)
     {
         $nim = DB::table('students')->where('nim', $request->nim)->first();
@@ -166,7 +157,8 @@ class PeminjamanController extends Controller
             return \redirect()->back()->with('message', 'Alat belum di pilih');
         }
         $selectTools = ToolArragement::find($request->alat);
-        return view('peminjaman.create', \compact('selectTools'));
+        $student = Student::find($request->student);
+        return view('peminjaman.create', \compact('selectTools', 'student'));
     }
 
     public function dataPeminjam()
